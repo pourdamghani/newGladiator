@@ -1,9 +1,5 @@
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import static sun.audio.AudioPlayer.player;
-
 /**
  * Created by Arash on 18/03/07.
  */
@@ -13,20 +9,20 @@ class Player{
     private Integer alive_power,alive_troops;
     private Integer id;
 
-    public Player(Integer id){
+    Player(Integer id){
         Scanner playerScanner = new Scanner(System.in);
         number_of_troops = playerScanner.nextInt();
         power_of_troops = playerScanner.nextInt();
         this.id = id;
     }
 
-    public Integer getNumber() {
+    /*public Integer getNumber() {
         return number_of_troops;
     }
 
     public Integer getPower() {
         return power_of_troops;
-    }
+    }*/
 
     public Integer getAlive_power() {
         return alive_power;
@@ -93,21 +89,21 @@ class Fraction{
     private Integer compareTo(Fraction other){
         BigInteger lcm = Fraction.LCM(denominator,other.denominator);
         BigInteger first_mul = lcm.divide(denominator), second_mul = lcm.divide(other.denominator);
-        return numerator.multiply(first_mul).compareTo(other.numerator.multiply(second_mul))
+        return numerator.multiply(first_mul).compareTo(other.numerator.multiply(second_mul));
     }
 }
 
 
 public class Test {
-    private static ArrayList<ArrayList<Fraction>> matrix = new ArrayList<ArrayList<Fraction>>();
     public static void main(String[] args) {
         solveForTwoPlayers(new Player(1), new Player(2), null);
     }
 
     private static Fraction solveForTwoPlayers(Player looser,Player winner, Integer winnerPower){
         if (winnerPower == null) {
-
+            return null;
         }
+        else{
         if(looser.empty()){
             if(looser.isFirstPlayer())
                 return new Fraction(-1,2);
@@ -119,26 +115,20 @@ public class Test {
             wholeTemp = new Fraction(0,1);
         else
             wholeTemp = new Fraction(1,1);
-
-        else{
-            for (Integer power = 0; power < looser.getAlive_power(); power++) {
-                Integer wholePower = winnerPower+power;
-                looser.decrese(power);
-                Fraction countinue = solveForTwoPlayers(looser,winner,winnerPower).multi(new Fraction(winnerPower,wholePower));
-                Fraction changed = solveForTwoPlayers(winner,looser,power).multi(new Fraction(power,wholePower));
-                Fraction temp = changed.plus(countinue);
-                looser.increase(power);
-                if (looser.isFirstPlayer())
-                    temp = Fraction.max(temp,wholeTemp);
-                else
-                    temp = Fraction.min(temp,wholeTemp);
+        for (Integer power = 0; power < looser.getAlive_power(); power++) {
+            Integer wholePower = winnerPower+power;
+            looser.decrese(power);
+            Fraction countinue = solveForTwoPlayers(looser,winner,winnerPower).multi(new Fraction(winnerPower,wholePower));
+            Fraction changed = solveForTwoPlayers(winner,looser,power).multi(new Fraction(power,wholePower));
+            Fraction temp = changed.plus(countinue);
+            looser.increase(power);
+            if (looser.isFirstPlayer())
+                wholeTemp = Fraction.max(temp,wholeTemp);
+            else
+                wholeTemp = Fraction.min(temp,wholeTemp);
             }
+            return wholeTemp;
         }
-        return wholeTemp;
-    }
-
-    private static void LP( ArrayList<ArrayList<Fraction>> matrix){
-
     }
 }
 
