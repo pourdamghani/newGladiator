@@ -147,7 +147,7 @@ public class Test {
         double[][] export = new double[n][m];
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
-                export[i-1][j-1] = matrix[i][j].getNumerator().divide(matrix[i][j].getDenominator()).doubleValue();
+                export[i-1][j-1] = (matrix[i][j].getNumerator().doubleValue())/(matrix[i][j].getDenominator().doubleValue());
             }
         }
         System.out.println("The Nash eq is:");
