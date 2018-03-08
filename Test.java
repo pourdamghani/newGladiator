@@ -40,16 +40,11 @@ class Player{
         alive_troops = alive_troops+1;
 
     }
-    public Integer getAlive_troops() {
-        return alive_troops;
+    public boolean empty(){
+        return (alive_power == 0 || alive_troops == 0);
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public static boolean empty(Player player){
-        return (player.getAlive_power() == 0 || player.getAlive_troops() == 0);
+    public boolean isFirstPlayer(){
+        return id == 1;
     }
 }
 
@@ -77,26 +72,86 @@ class Fraction{
     public Fraction multi(Fraction second){
         return new Fraction(getNumerator().multiply(second.getNumerator()),getDenominator().multiply(second.getDenominator()));
     }
-    public Fraction sum(Fraction second){
-        BigInteger lcm = Fraction.LCM(denominator,second.denominator);
-        BigInteger first_mul = lcm.divide(denominator), second_mul = lcm.divide(second.denominator);
-        return new Fraction(numerator.multiply(first_mul).add(second.numerator.multiply(second_mul)),lcm);
+    public Fraction plus(Fraction other){
+        BigInteger lcm = Fraction.LCM(denominator,other.denominator);
+        BigInteger first_mul = lcm.divide(denominator), second_mul = lcm.divide(other.denominator);
+        return new Fraction(numerator.multiply(first_mul).add(other.numerator.multiply(second_mul)),lcm);
     }
     private static BigInteger LCM(BigInteger first, BigInteger second){
         return (first.multiply(second).divide(first.gcd(second)));
     }
+    public static Fraction max(Fraction first, Fraction second){
+        if(first.compareTo(second) > -1)
+            return first;
+        return second;
+    }
+    public static Fraction min(Fraction first, Fraction second){
+        if(first.compareTo(second) < 1)
+            return first;
+        return second;
+    }
+    private Integer compareTo(Fraction other){
+        BigInteger lcm = Fraction.LCM(denominator,other.denominator);
+        BigInteger first_mul = lcm.divide(denominator), second_mul = lcm.divide(other.denominator);
+        return numerator.multiply(first_mul).compareTo(other.numerator.multiply(second_mul))
+    }
 }
 
-class Pair{
+
+public class Test {
+    private static ArrayList<ArrayList<Fraction>> matrix = new ArrayList<ArrayList<Fraction>>();
+    public static void main(String[] args) {
+        solveForTwoPlayers(new Player(1), new Player(2), null);
+    }
+
+    private static Fraction solveForTwoPlayers(Player looser,Player winner, Integer winnerPower){
+        if (winnerPower == null) {
+
+        }
+        if(looser.empty()){
+            if(looser.isFirstPlayer())
+                return new Fraction(-1,2);
+            else
+                return new Fraction(1,2);
+        }
+        Fraction wholeTemp;
+        if( looser.isFirstPlayer())
+            wholeTemp = new Fraction(0,1);
+        else
+            wholeTemp = new Fraction(1,1);
+
+        else{
+            for (Integer power = 0; power < looser.getAlive_power(); power++) {
+                Integer wholePower = winnerPower+power;
+                looser.decrese(power);
+                Fraction countinue = solveForTwoPlayers(looser,winner,winnerPower).multi(new Fraction(winnerPower,wholePower));
+                Fraction changed = solveForTwoPlayers(winner,looser,power).multi(new Fraction(power,wholePower));
+                Fraction temp = changed.plus(countinue);
+                looser.increase(power);
+                if (looser.isFirstPlayer())
+                    temp = Fraction.max(temp,wholeTemp);
+                else
+                    temp = Fraction.min(temp,wholeTemp);
+            }
+        }
+        return wholeTemp;
+    }
+
+    private static void LP( ArrayList<ArrayList<Fraction>> matrix){
+
+    }
+}
+
+/*class Pair{
     private Fraction first,second;
-    Pair(Player one, Integer i, Integer j){
-        if(one.getId() == 0){
-            first = new Fraction(i,1);
-            second = new Fraction(j, 1);
+    Pair(Player looser){
+        if(looser.getId() == 0){
+            first = new Fraction(-1,2);
+            second = new Fraction(1, 2);
         }
         else {
-            first = new Fraction(j, 1);
-            second = new Fraction(i,1);
+            first = new Fraction(1, 2);
+            second = new Fraction(-1,2);
         }
     }
 
@@ -113,50 +168,11 @@ class Pair{
         return second;
     }
 
-    public Pair Sum(Pair other){
+    public Pair sum(Pair other){
         return new Pair(first.sum(other.getFirst()), second.sum(other.getSecond()));
     }
 
     public Pair multi(Fraction fraction){
         return new Pair(first.multi(fraction),second.multi(fraction));
     }
-}
-
-public class Test {
-    private static ArrayList<ArrayList<Fraction>> matrix = new ArrayList<ArrayList<Fraction>>();
-    private static ArrayList<Player> players= new ArrayList<Player>();
-    public static void main(String[] args) {
-        Scanner mainScanner = new Scanner(System.in);
-        Integer number_of_players = mainScanner.nextInt();
-        Integer number_of_battle_fields = mainScanner.nextInt();
-        for (Integer i = 0; i < number_of_players; i++) {
-            players.add(new Player(i));
-        }
-        solveForTwoPlayers(players,null);
-    }
-
-    private static Pair solveForTwoPlayers(ArrayList<Player> players,Player winner){
-        if (winner == null) {
-
-        }
-        Pair tempSum = new Pair(winner,0,0);
-        for (Player player : players) {
-            if (!player.equals(winner)){
-                if(Player.empty(player)){
-                    return new Pair(player , 0  , 1);
-                }
-                else{
-                    for (Integer power = 0; power < player.getAlive_power(); power++) {
-                        player.decrese(power);
-
-                        player.increase(power);
-                    }
-                }
-            }
-        }
-    }
-
-    private static void LP( ArrayList<ArrayList<Fraction>> matrix){
-
-    }
-}
+}*/
