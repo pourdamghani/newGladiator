@@ -18,7 +18,6 @@ class Player{
     }
 
     public Integer getAlive_power() { return alive_power; }
-    public Integer getAlive_troops() { return alive_troops; }
 
     public void decrease(Integer amount){
         alive_power = alive_power-amount;
@@ -79,7 +78,7 @@ class Fraction{
 public class Test {
     public static void main(String[] args) {
         Player firstPlyaer = new Player(1), secondPlayer = new Player(2);
-        Fraction[][] matrix = new  Fraction[firstPlyaer.getAlive_troops()][secondPlayer.getAlive_troops()];
+        Fraction[][] matrix = new  Fraction[firstPlyaer.getAlive_power()+10][secondPlayer.getAlive_power()+10];
         System.out.println("Thank you:");
         for (Integer first_power = 1; first_power <= firstPlyaer.getAlive_power(); first_power++) {
             firstPlyaer.decrease(first_power);
