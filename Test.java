@@ -11,13 +11,10 @@ class Player{
     private Integer alive_power,alive_troops;
     private Integer id;
 
-    Player(Integer id){
+    Player(Integer id, Integer alive_troops, Integer alive_power){
         this.id = id;
-        Scanner playerScanner = new Scanner(System.in);
-        System.out.println("Please enter number of troops of player " + id + ":");
-        alive_troops = playerScanner.nextInt();
-        System.out.println("Please power of troops of player " + id + ":");
-        alive_power = playerScanner.nextInt();
+        this.alive_troops = alive_troops;
+        this.alive_power = alive_power;
     }
 
     public Integer getAlive_power() { return alive_power; }
@@ -92,11 +89,15 @@ class Fraction{
 
 
 public class Test {
-    public static void main(String[] args) {
-        Player firstPlyaer = new Player(1), secondPlayer = new Player(2);
+    Player firstPlyaer,secondPlayer;
+    Test(Integer firstTroops, Integer firstPower, Integer secondTroops,  Integer secondPower) {
+        firstPlyaer = new Player(1, firstTroops,firstPower);
+        secondPlayer = new Player(2,secondTroops,secondPower);
+    }
+
+    public TwoPersonZeroSumGame solve(){
         Fraction[][] matrix = new  Fraction[firstPlyaer.getAlive_power()+10][secondPlayer.getAlive_power()+10];
         Fraction zeroSumized = new Fraction(-1,2);
-        System.out.println("The Shape of Matrix is:");
         for (Integer first_power = 1; first_power <= firstPlyaer.getAlive_power(); first_power++) {
             firstPlyaer.decrease(first_power);
             for (Integer second_power = 1; second_power <= secondPlayer.getAlive_power(); second_power++) {
@@ -105,15 +106,11 @@ public class Test {
                 Fraction first_wins = solveForTwoPlayers(secondPlayer,firstPlyaer,first_power).multi(new Fraction(first_power,whole_power));
                 Fraction second_wins = solveForTwoPlayers(firstPlyaer,secondPlayer,second_power).multi(new Fraction(second_power,whole_power));
                 matrix[first_power][second_power] = first_wins.plus(second_wins).plus(zeroSumized);
-                System.out.print(matrix[first_power][second_power].getNumerator()+ "/" + matrix[first_power][second_power].getDenominator() + "  ");
                 secondPlayer.increase(second_power);
             }
-            System.out.println();
             firstPlyaer.increase(first_power);
         }
-
-        FindNash(matrix,firstPlyaer.getAlive_power(),secondPlayer.getAlive_power());
-
+        return FindNash(matrix,firstPlyaer.getAlive_power(),secondPlayer.getAlive_power());
     }
 
     private static Fraction solveForTwoPlayers(Player looser,Player winner, Integer winnerPower){
@@ -135,35 +132,55 @@ public class Test {
             Fraction changed = solveForTwoPlayers(winner,looser,power).multi(new Fraction(power,wholePower));
             Fraction temp = changed.plus(continued);
             looser.increase(power);
-            if (looser.isFirstPlayer())
-                wholeTemp = Fraction.max(temp,wholeTemp);
-            else
-                wholeTemp = Fraction.min(temp,wholeTemp);
+            if (looser.isFirstPlayer()) {
+                wholeTemp = Fraction.max( wholeTemp,temp);
             }
+            else {
+                wholeTemp = Fraction.min(wholeTemp,temp);
+            }
+        }
             return wholeTemp;
     }
 
-    private static void FindNash(Fraction[][] matrix, int n, int m){
+    private static TwoPersonZeroSumGame FindNash(Fraction[][] matrix, int n, int m){
         double[][] export = new double[n][m];
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
                 export[i-1][j-1] = (matrix[i][j].getNumerator().doubleValue())/(matrix[i][j].getDenominator().doubleValue());
             }
         }
-        System.out.println("The Nash eq is:");
-        TwoPersonZeroSumGame zerosum = new TwoPersonZeroSumGame(export);
-        double[] x = zerosum.row();
-        double[] y = zerosum.column();
-        StdOut.print("A[] = [");
-        for (int j = 0; j < m-1; j++)
-            StdOut.printf("%8.4f, ", x[j]);
-        StdOut.printf("%8.4f]\n", x[m-1]);
-
-        StdOut.print("B[] = [");
-        for (int i = 0; i < n-1; i++)
-            StdOut.printf("%8.4f, ", y[i]);
-        StdOut.printf("%8.4f]\n", y[n-1]);
+        return new TwoPersonZeroSumGame(export);
     }
+    /*private static TwoPersonZeroSumGame FindNash(Fraction[][] matrix, int n, int m){
+        double[][] export = new double[n][m];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                export[i-1][j-1] = (matrix[i][j].getNumerator().doubleValue())/(matrix[i][j].getDenominator().doubleValue());
+            }
+        }
+        TwoPersonZeroSumGame zeroSumGame = new TwoPersonZeroSumGame(export);
+        find_Best(zeroSumGame,n,m);
+        return zeroSumGame;
+    }
+    static void find_Best(TwoPersonZeroSumGame zeroSumGame, int n, int m){
+        double[] x = zeroSumGame.row();
+        double[] y = zeroSumGame.column();
+        int bestDovom = m+1, bestAval = n+1;
+        for (int j = 0; j < m; j++) {
+            if( x[j] > 0.9){
+                 bestDovom = j+1;
+                //System.out.println("j: " + (j+1) + " / " + m + " " + (((double)(j+1)/(double)m)*100) );
+
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if( y[i] > 0.9){
+                bestAval = i+1;
+                //System.out.println("i: " + (i+1) + " / " + n + " " + (((double)(i+1)/(double)n)*100) );
+            }
+        }
+
+    }*/
 }
 
 /*class Pair{
