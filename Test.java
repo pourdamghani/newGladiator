@@ -1,8 +1,6 @@
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.TwoPersonZeroSumGame;
 
 import java.math.BigInteger;
-import java.util.Scanner;
 /**
  * Created by Arash on 18/03/07.
  */
@@ -89,10 +87,10 @@ class Fraction{
 
 
 public class Test {
-    Player firstPlyaer,secondPlayer;
+    private Player firstPlyaer,secondPlayer;
     Test(Integer firstTroops, Integer firstPower, Integer secondTroops,  Integer secondPower) {
-        firstPlyaer = new Player(1, firstTroops,firstPower);
-        secondPlayer = new Player(2,secondTroops,secondPower);
+        this.firstPlyaer = new Player(1, firstTroops,firstPower);
+        this.secondPlayer = new Player(2,secondTroops,secondPower);
     }
 
     public TwoPersonZeroSumGame solve(){

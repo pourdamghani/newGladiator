@@ -1,4 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.TwoPersonZeroSumGame;
 
 import java.util.Scanner;
@@ -38,7 +37,7 @@ public class TestGen {
         StdOut.printf("%8.4f]\n", y[n-1]);
          */
     }
-    static void print(TwoPersonZeroSumGame zeroSumGame, int n, int m) {
+    private static void print(TwoPersonZeroSumGame zeroSumGame, int n, int m) {
         double[] x = zeroSumGame.row();
         double[] y = zeroSumGame.column();
         for (int j = 0; j < m; j++) {
