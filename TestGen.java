@@ -14,10 +14,13 @@ public class TestGen {
                 for (Integer power2 = max_power/2; power2 <= max_power; power2++) {
                     for (Integer power1 = 1; power1 <= power2; power1++) {
                         Test test = new Test(troop1,power1,troop2,power2);
-                        System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 );
-                        System.out.println("First Troops: " + troop1 + " First Power: " + power1 + " percent: " + (((double)1/(double)troop1)*100) );
-                        print(test.solve(),power1,power2);
-                        //System.out.println();
+                        int myCode = print(test.solve(),power1,power2);
+                        int paper = Paper.solve(troop1,troop2,power1,power2);
+                        if( myCode != paper){
+                            System.out.println("heeey your code is " + myCode + " but the paper is " + paper);
+                            System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 );
+                            System.out.println("First Troops: " + troop1 + " First Power: " + power1 + " percent: " + (((double)1/(double)troop1)*100) );
+                        }
                     }
                 }
             }
@@ -37,7 +40,7 @@ public class TestGen {
         StdOut.printf("%8.4f]\n", y[n-1]);
          */
     }
-    private static void print(TwoPersonZeroSumGame zeroSumGame, int n, int m) {
+    private static int print(TwoPersonZeroSumGame zeroSumGame, int n, int m) {
         double[] x = zeroSumGame.row();
         double[] y = zeroSumGame.column();
         /*for (int j = 0; j < m; j++) {
@@ -47,13 +50,12 @@ public class TestGen {
                 System.out.println("j: " + (j+1) + " / " + m + " " + (((double)(j+1)/(double)m)*100) );
             }
         }*/
+        int ans = 0;
         for (int i = 0; i < n; i++) {
-            if (y[i] > 0 && y[i] < 0.9) {
-                System.out.println("baaaad");
-            }
-            else if( y[i] > 0.9){
-                System.out.println("i: " + (i+1) + " / " + n + " " + (((double)(i+1)/(double)n)*100) );
+            if( y[i] > 0.9){
+                ans = i+1;
             }
         }
+        return ans;
     }
 }
