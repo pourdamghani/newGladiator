@@ -9,12 +9,12 @@ public class TestGen {
         Integer max_num_troop = scanner.nextInt();
         System.out.println("Enter the maximum power");
         Integer max_power = scanner.nextInt();
-        for (Integer troop1 = max_num_troop/2; troop1 <= max_num_troop; troop1++) {
-            for (Integer troop2 = 1; troop2 <= max_num_troop; troop2++) {
-                for (Integer power1 = max_power/2; power1 <= max_power; power1++) {
-                    for (Integer power2 = 1; power2 <= max_power; power2++) {
+        for (Integer troop2 = max_num_troop/2; troop2 <= max_num_troop; troop2++) {
+            for (Integer troop1 = 1; troop1 <= max_num_troop; troop1++) {
+                for (Integer power2 = max_power/2; power2 <= max_power; power2++) {
+                    for (Integer power1 = 1; power1 <= power2; power1++) {
                         Test test = new Test(troop1,power1,troop2,power2);
-                        System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 + " percent: " +  (((double)1/(double)troop2)*100) );
+                        System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 );
                         System.out.println("First Troops: " + troop1 + " First Power: " + power1 + " percent: " + (((double)1/(double)troop1)*100) );
                         print(test.solve(),power1,power2);
                         //System.out.println();
@@ -40,13 +40,13 @@ public class TestGen {
     private static void print(TwoPersonZeroSumGame zeroSumGame, int n, int m) {
         double[] x = zeroSumGame.row();
         double[] y = zeroSumGame.column();
-        for (int j = 0; j < m; j++) {
+        /*for (int j = 0; j < m; j++) {
             if (x[j] > 0 && x[j] < 0.9)
                 System.out.println("baaaad");
             else  if( x[j] > 0.9){
                 System.out.println("j: " + (j+1) + " / " + m + " " + (((double)(j+1)/(double)m)*100) );
             }
-        }
+        }*/
         for (int i = 0; i < n; i++) {
             if (y[i] > 0 && y[i] < 0.9) {
                 System.out.println("baaaad");
