@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.TwoPersonZeroSumGame;
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
 public class TestGen {
@@ -9,14 +10,15 @@ public class TestGen {
         Integer max_num_troop = scanner.nextInt();
         System.out.println("Enter the maximum power");
         Integer max_power = scanner.nextInt();
-        for (Integer troop2 = max_num_troop/2; troop2 <= max_num_troop; troop2++) {
+        for (Integer troop2 = 1; troop2 <= max_num_troop; troop2++) {
             for (Integer troop1 = 1; troop1 <= max_num_troop; troop1++) {
-                for (Integer power2 = max_power/2; power2 <= max_power; power2++) {
-                    for (Integer power1 = 1; power1 <= power2; power1++) {
+                for (Integer power2 = troop2; power2 <= max_power; power2++) {
+                    for (Integer power1 =  troop1 ; power1 <= power2; power1++) {
                         Test test = new Test(troop1,power1,troop2,power2);
                         int myCode = print(test.solve(),power1,power2);
                         int paper = Paper.solve(troop1,troop2,power1,power2);
-                        if( myCode != paper){
+                       // System.out.println("heeey your code is " + myCode + " but the paper is " + paper);
+                        if( Math.abs(myCode-paper) > 1){
                             System.out.println("heeey your code is " + myCode + " but the paper is " + paper);
                             System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 );
                             System.out.println("First Troops: " + troop1 + " First Power: " + power1 + " percent: " + (((double)1/(double)troop1)*100) );
