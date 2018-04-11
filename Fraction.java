@@ -4,14 +4,6 @@ class Fraction{
     private BigInteger numerator;
     private BigInteger denominator;
 
-    public BigInteger getNumerator() {
-        return numerator;
-    }
-
-    public BigInteger getDenominator() {
-        return denominator;
-    }
-
     Fraction(Integer numerator, Integer denominator) {
         this.numerator = BigInteger.valueOf(numerator);
         this.denominator = BigInteger.valueOf(denominator);

@@ -1,6 +1,5 @@
 import edu.princeton.cs.algs4.TwoPersonZeroSumGame;
 
-import java.math.BigInteger;
 import java.util.Scanner;
 
 public class TestGen {
@@ -13,21 +12,21 @@ public class TestGen {
         for (Integer troop2 = 1; troop2 <= max_num_troop; troop2++) {
             for (Integer troop1 = 1; troop1 <= max_num_troop; troop1++) {
                 for (Integer power2 = troop2; power2 <= max_power; power2++) {
-                    for (Integer power1 =  troop1 ; power1 <= power2; power1++) {
-                        Test test = new Test(troop1,power1,troop2,power2);
-                        int myCode = print(test.solve(),power1,power2);
-                        int paper = Paper.solve(troop1,troop2,power1,power2);
-                       // System.out.println("heeey your code is " + myCode + " but the paper is " + paper);
+                    for (Integer power1 =  troop1 ; power1 <= max_power; power1++) {
+                        System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 );
+                        System.out.println("First Troops: " + troop1 + " First Power: " + power1 + " percent: " + (((double)1/(double)troop1)*100) );
+                        print(Test.solve(troop1,power1,troop2,power2),power1,power2);
+                        //System.out.println("heeey your code is " + myCode);
+                     /*   int paper = Paper.solve(troop1,troop2,power1,power2);
                         if( Math.abs(myCode-paper) > 1){
                             System.out.println("heeey your code is " + myCode + " but the paper is " + paper);
                             System.out.println("Second Troops: " + troop2 + " Second Power:" + power2 );
                             System.out.println("First Troops: " + troop1 + " First Power: " + power1 + " percent: " + (((double)1/(double)troop1)*100) );
-                        }
+                        }*/
                     }
                 }
             }
         }
-
         /*
         double[] x = zerosum.row();
         double[] y = zerosum.column();
